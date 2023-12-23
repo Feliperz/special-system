@@ -1,0 +1,16 @@
+name: Cloudformation nag
+on: [push]
+
+jobs:
+    cloudformation-nag:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - run: |
+            eval "$(/home/linuxbrew/linuxbrew/bin/brew shellenv)"
+            brew install ruby brew-gem
+            brew gem install cfn-nag
+
+        - run: |
+              eval "$(/home/linuxbrew/ linuxbrew/bin/brew shellenv)"
+              cfn_nag_scan --input-path main.yaml
