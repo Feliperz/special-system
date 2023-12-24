@@ -1,0 +1,26 @@
+name: CloudformationDeploy
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+    cloudformationDeploy:
+      name: Deploy Cloudformation Template                                                                    
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          enviroment: production
+
+        - name: Configure AWS crendentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with: 
+            aws-access-key-id: ${{secrets.ACCESS_KEY}}
+            aws-secret-access-key: ${{secrets.SECRET_ACCESS_KEY}}
+            aws-regino: us-west-2
+
+        - name: Deploy  cloudformation template
+          run: |
+              aws cloudformation deploy --stack-name my-ec2 --template-file Ec2Cloud.yaml --disable-rollback
